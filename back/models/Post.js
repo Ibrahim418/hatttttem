@@ -57,7 +57,7 @@ exports.createPost = async (req, res) => {
     discription:myBody.discription,
     picture: path,
     likers: [],
-    comments: [],
+    comments: [mongoose.Types.ObjectId],
    owner:myBody.owner
   });
 

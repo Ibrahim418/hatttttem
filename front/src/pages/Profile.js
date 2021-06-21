@@ -4,7 +4,7 @@ import UploadImg from "./UploadImg";
 import "../App.css";
 import { loadUser } from "../action/authaction";
 import './Profile.css'
-import axios from "axios";
+import{Button} from './Button'
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -33,17 +33,23 @@ const Profile = () => {
 
   return (
     
-<div>
+
+<div className='feed-container'>
+        <img src='./images/camp3.jpg' className='backpic' />
       {/* <button onClick={() => profileData()}>New Person</button> */}
       <div className="card">
-        <img src="./images/capserrat.jpg" style={{ width: "100%" }} />
-        <h1>Ibrahim</h1>
+        <img src="./images/capserrat.jpg" style={{ width: "100%" ,borderRadius:'360%' }} />
+        <h1 style={{color:'white'}}>Ibrahim</h1>
         <p className="title">myEmail</p>
-        <p>myDescription</p>
-        <p>
-          <button>Edit Profile</button>
-        </p>
+        <p style={{color:'white'}}>myDescription</p>
+    
       </div>
+      <div className='feed-btns'>
+      <Button className='btns' buttonStyle='btn--outline'
+            buttonSize='btn--large' >
+            Update Profile                
+                </Button>
+                </div>
     </div>
  
   )}

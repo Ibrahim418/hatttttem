@@ -1,24 +1,42 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {  useSelector } from "react-redux";
 import "./Feed.css";
 import "../App.css";
 import Moment from "react-moment";
 import { Spinner } from "react-bootstrap";
-import { ListItem, ListItemText, ListItemAvatar, Avatar, TextField, Button } from '@material-ui/core';
+import { ListItem, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
+import Comments from './Comments';
+import Comment from './Comment';
+import axios from 'axios';
 
 
 
 const Posts = ({ post }) => {
   const auth = useSelector((state) => state.auth);
+  const  [comments,setComments]= useState(null)
+  const [error, setError] = useState(null)
+  const refreshComment = ()=>{
+  
+    axios.get("http://localhost:4000/api/comment/getComments/"+post._id)
+    .then (res=>{
+      console.log(res.data)
+      return setComments(res.data)})
+    .catch ((err)=>setError(err.response.data))
+}
+useEffect(() => {
+  axios.get("http://localhost:4000/api/comment/getComments/"+post._id)
+  .then (res=>setComments(res.data))
+  .catch ((err)=>setError(err.response.data))
+  }, [])
 
-
-  const posts = useSelector(state => state.posts)
   // const updateComment = (newComment) => {
   //   setCommentList(commentList.concat(newComment));
   // };
 
   // const [commentList, setCommentList] = useState([]);
+ 
+ 
 
   return post === null || !post ? (
     <div className="all-page-wrapper flex__center">
@@ -42,22 +60,10 @@ const Posts = ({ post }) => {
         <div className="post__comments">
             {/* <Comments /> */}
         </div>
-        <form className="post__form">
-            <TextField
-                label="add comment"
-                size="small"
-                variant="outlined"
-                className="post__input"
-                placeholder="add comment"
-            />
-            <Button
-                variant="contained"
-                size="small"
-                endIcon={<SendIcon />}
-            >
-                Send
-            </Button>
-        </form>
+        <Comments postId={post._id} comments={comments}/>
+        <Comment refreshComment={refreshComment}   postId={post._id} writer={auth.user._id}/>
+            
+        
     </div>
 </div>
   );

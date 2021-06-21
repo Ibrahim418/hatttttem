@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(bodyParser.urlencoded({extended:false}))
  //define Routes   
-
+ app.use('/api/comment',require('./routes/comment'))
  userroutes(app)
  postroutes(app)
  grouperoutes(app)

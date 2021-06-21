@@ -9,6 +9,7 @@ import {
   MOST_LIKED_POST,
   LIKEPOST_ERROR,
   GETBYDATE,
+  GETCOMMENT_FAIL,GETCOMMENT_SUCCESS
 } from "./type";
 import axios from "axios";
 
@@ -16,6 +17,7 @@ import axios from "axios";
 
 export const getPosts = () => (dispatch) => {
   axios.get("http://localhost:4000/posts").then((res) => {
+    console.log(res.data)
     return dispatch({
       type: GETPOSTS,
       payload: res.data,
@@ -68,15 +70,11 @@ export const addPost = (data,file) => (dispatch) => {
 
 //------------aadcomment------------------
 
-export const addcomment = (postId, data) => (dispatch) => {
+export const addcomment = (data) => (dispatch) => {
   axios
-    .put("http://localhost:4000/comment/:postId ", data)
-    .then((res) => {
-      return dispatch({
-        type: ADDCOMMENT_SUCCESS,
-        payload: res.data,
-      });
-      dispatch(getpost(postId));
+    .post("http://localhost:4000/api/comment/savecomment", data)
+    .then(() => {
+      dispatch(getPosts());
     })
     .catch((err) =>
       dispatch({
@@ -85,6 +83,23 @@ export const addcomment = (postId, data) => (dispatch) => {
       })
     );
 };
+
+export const getComments =(postId)=>(dispatch)=>{
+  axios.get("http://localhost:4000/api/comment/getComments/"+postId)
+  .then((res) => {
+    dispatch(getpost(postId));
+    dispatch({
+      type:GETCOMMENT_SUCCESS,
+      payload: res.data
+    })
+  })
+  .catch((err) =>
+  dispatch({
+    type: GETCOMMENT_FAIL,
+    payload: err.response.data.msg,
+  })
+);
+}
 
 //----------addliketopost---------------------
 

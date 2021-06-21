@@ -13,9 +13,11 @@ const PostList = () => {
     dispatch(getPosts())
     
   }, [])
+
+  
  return(
    <div>
-   {posts && posts.posts.map(elm=><Posts post={elm}></Posts>)}
+   {posts.posts.map(elm=><Posts post={elm}></Posts>)}
    </div>
    
  )
